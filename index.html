@@ -9,60 +9,31 @@
   <title>Signal</title>
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <!-- Generalist DS: theme (tokens) + components (primitive classes) -->
   <link rel="stylesheet" href="./src/styles/theme.css" />
+  <link rel="stylesheet" href="./src/styles/components.css" />
+  <!-- Signal-specific domain layer (minimal, everything else comes from DS) -->
   <style>
     /* ============================================================
-       SIGNAL APP — Expressive variant (OLED, generous radii, white CTAs)
-       Composes primitives from generalist-design-system/theme.css
-       Uses Expressive role scale (commented block in theme.css) — so we
-       inline the Expressive overrides here for prototype speed.
+       SIGNAL — domain-specific styles only.
+       Everything primitive/structural is in components.css from DS.
+       This file only contains patterns that are genuinely Signal-only
+       and not (yet) promoted to the DS.
        ============================================================ */
 
-    :root {
-      /* Expressive variant overrides */
-      --color-surface-canvas: #000000;
-      --color-surface-panel: #111111;
-      --color-surface-card: #181818;
-      --color-surface-hover: #1E1E1E;
-      --color-surface-nav: #050505;
-
-      --color-text-primary: #FFFFFF;
-      --color-text-secondary: #C7C7C7;
-      --color-text-muted: #B8B8B8;
-      --color-text-inverse: #000000;
-
-      --color-border-subtle: #222222;
-      --color-border-base: #2A2A2A;
-      --color-border-strong: #333333;
-
-      /* Expressive radii */
-      --radius-save-button: 12px;
-      --radius-settings-row: 16px;
-      --radius-stepper: 18px;
-      --radius-well: 18px;
-      --radius-card: 20px;
-      --radius-button: 20px;
-      --radius-hero: 24px;
-
-      --font-floor: 11px;
-    }
-
+    /* ---------- Phone-frame wrapper (prototype chrome) ---------- */
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
     html, body {
       background: #000;
       color: var(--color-text-primary);
       font-family: var(--font-sans);
-      font-feature-settings: "ss01", "cv01", "cv11";
       height: 100%;
       overflow: hidden;
       overscroll-behavior: none;
     }
-
     button, input, textarea { font-family: inherit; color: inherit; }
     button { background: none; border: none; cursor: pointer; }
 
-    /* ---------- Phone frame (desktop viewing) ---------- */
     .phone-frame {
       width: 100%;
       max-width: 390px;
@@ -85,18 +56,16 @@
       }
     }
 
-    /* ---------- Status bar ---------- */
-    .status-bar {
+    .phone-status-bar {
       height: 44px;
       padding: 0 24px;
       display: flex; justify-content: space-between; align-items: center;
       font-size: 15px; font-weight: 600;
       flex-shrink: 0;
     }
-    .status-bar .right { display: flex; gap: 6px; align-items: center; }
-    .status-bar svg { fill: var(--color-text-primary); }
+    .phone-status-bar .right { display: flex; gap: 6px; align-items: center; }
+    .phone-status-bar svg { fill: var(--color-text-primary); }
 
-    /* ---------- Screen container ---------- */
     .screen {
       flex: 1;
       display: none;
@@ -104,250 +73,12 @@
       overflow-y: auto;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
-      padding: 0 var(--layout-screen-margin);
+      padding: 0 var(--layout-screen-margin, 20px);
     }
     .screen.active { display: flex; }
-    .screen-content { padding-bottom: 96px; /* bottom nav space */ }
+    .screen-content { padding-bottom: 96px; }
 
-    /* ---------- Typography roles (Expressive) ---------- */
-    .t-screen-title  { font-size: 34px; font-weight: 700; letter-spacing: -0.5px; }
-    .t-section-title { font-size: 24px; font-weight: 700; letter-spacing: -0.3px; }
-    .t-card-title    { font-size: 18px; font-weight: 700; }
-    .t-stepper       { font-size: 22px; font-weight: 700; }
-    .t-body          { font-size: 13px; font-weight: 600; }
-    .t-body-reg      { font-size: 13px; font-weight: 400; }
-    .t-section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--color-text-muted); }
-    .t-meta          { font-size: 11px; font-weight: 400; color: var(--color-text-muted); }
-    .t-hero-metric   { font-size: 56px; font-weight: 900; letter-spacing: -2px; }
-    .t-history-value { font-size: 16px; font-weight: 700; }
-
-    /* ---------- Brand ---------- */
-    .brand-lockup {
-      display: flex; align-items: baseline; gap: 2px;
-      font-size: 28px; letter-spacing: -1px;
-    }
-    .brand-lockup .signal { font-weight: 900; }
-    .brand-lockup .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-text-primary); display: inline-block; margin-left: 4px; transform: translateY(-2px); }
-
-    /* ---------- Components ---------- */
-
-    /* Primary button (Expressive: white fill, black text) */
-    .btn-primary {
-      width: 100%;
-      height: 56px;
-      background: var(--color-text-primary);
-      color: var(--color-text-inverse);
-      border-radius: var(--radius-button);
-      font-size: 18px;
-      font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      transition: transform 80ms ease;
-    }
-    .btn-primary:active { transform: scale(0.98); }
-    .btn-primary:disabled { opacity: 0.3; }
-
-    .btn-secondary {
-      width: 100%;
-      height: 52px;
-      background: var(--color-surface-card);
-      color: var(--color-text-primary);
-      border-radius: var(--radius-button);
-      font-size: 15px; font-weight: 600;
-      border: 1px solid var(--color-border-base);
-    }
-
-    .btn-ghost {
-      color: var(--color-text-secondary);
-      font-size: 15px; font-weight: 600;
-      padding: 12px 16px;
-    }
-
-    .btn-icon {
-      width: 44px; height: 44px;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--color-text-primary);
-    }
-
-    /* Paste field */
-    .paste-field {
-      width: 100%;
-      min-height: 120px;
-      background: var(--color-surface-card);
-      border: 1px solid var(--color-border-subtle);
-      border-radius: var(--radius-well);
-      padding: 20px;
-      color: var(--color-text-primary);
-      font-size: 15px;
-      font-weight: 500;
-      resize: none;
-      outline: none;
-      transition: border-color 150ms ease;
-    }
-    .paste-field:focus { border-color: var(--color-border-strong); }
-    .paste-field::placeholder { color: var(--color-text-muted); }
-
-    /* Card */
-    .card {
-      background: var(--color-surface-card);
-      border-radius: var(--radius-card);
-      padding: 16px;
-      border: 1px solid var(--color-border-subtle);
-    }
-    .card:active { background: var(--color-surface-hover); }
-
-    /* Source preview card */
-    .source-preview {
-      background: var(--color-surface-card);
-      border-radius: var(--radius-card);
-      padding: 16px;
-      display: flex;
-      gap: 12px;
-      border: 1px solid var(--color-border-subtle);
-    }
-    .source-thumb {
-      width: 72px; height: 72px;
-      border-radius: var(--radius-save-button);
-      background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
-      flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
-      position: relative;
-    }
-    .source-thumb .thumb-emoji {
-      font-size: 32px; opacity: 0.7;
-    }
-    .source-info { flex: 1; min-width: 0; }
-    .source-info .title {
-      font-size: 15px; font-weight: 700;
-      line-height: 1.3;
-      overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-      margin-bottom: 4px;
-    }
-    .source-info .meta {
-      font-size: 11px; color: var(--color-text-muted);
-      display: flex; gap: 6px;
-    }
-    .source-info .meta .sep { opacity: 0.5; }
-
-    /* Preset picker (segmented control) */
-    .preset-picker {
-      background: var(--color-surface-card);
-      border-radius: var(--radius-button);
-      padding: 4px;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 4px;
-      border: 1px solid var(--color-border-subtle);
-    }
-    .preset-btn {
-      padding: 12px 8px;
-      border-radius: 16px;
-      font-size: 13px; font-weight: 600;
-      color: var(--color-text-secondary);
-      text-align: center;
-      transition: all 150ms ease;
-    }
-    .preset-btn.active {
-      background: var(--color-text-primary);
-      color: var(--color-text-inverse);
-    }
-    .preset-btn .mins {
-      display: block;
-      font-size: 11px;
-      font-weight: 400;
-      margin-top: 2px;
-      opacity: 0.7;
-    }
-    .preset-btn.active .mins { opacity: 0.6; }
-
-    /* Recommendation pill */
-    .recommendation {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--color-border-subtle);
-      border-radius: var(--radius-well);
-      padding: 12px 16px;
-      display: flex; gap: 12px; align-items: flex-start;
-    }
-    .recommendation .icon {
-      font-size: 16px;
-      margin-top: 2px;
-    }
-    .recommendation .text {
-      flex: 1;
-      font-size: 13px;
-      line-height: 1.45;
-      color: var(--color-text-secondary);
-    }
-    .recommendation strong { color: var(--color-text-primary); font-weight: 700; }
-
-    /* Processing screen */
-    .processing-wrap {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      min-height: 60vh;
-      gap: 32px;
-    }
-    .pulse-ring {
-      width: 120px; height: 120px;
-      border: 2px solid var(--color-text-primary);
-      border-radius: 50%;
-      position: relative;
-      animation: pulse 2s ease-out infinite;
-    }
-    .pulse-ring::before,
-    .pulse-ring::after {
-      content: '';
-      position: absolute;
-      inset: -2px;
-      border-radius: 50%;
-      border: 2px solid var(--color-text-primary);
-      opacity: 0;
-      animation: pulseOut 2s ease-out infinite;
-    }
-    .pulse-ring::after { animation-delay: 1s; }
-    @keyframes pulse {
-      0%, 100% { box-shadow: inset 0 0 0 0 rgba(255,255,255,0.05); }
-      50% { box-shadow: inset 0 0 0 60px rgba(255,255,255,0.03); }
-    }
-    @keyframes pulseOut {
-      0% { transform: scale(1); opacity: 0.6; }
-      100% { transform: scale(1.6); opacity: 0; }
-    }
-    .processing-stage {
-      text-align: center;
-      font-size: 18px; font-weight: 700;
-      min-height: 28px;
-    }
-    .processing-sub {
-      text-align: center;
-      font-size: 13px; color: var(--color-text-muted);
-      min-height: 20px;
-    }
-    .stage-checklist {
-      display: flex; flex-direction: column; gap: 8px;
-      width: 80%; max-width: 260px;
-    }
-    .stage-item {
-      display: flex; gap: 10px; align-items: center;
-      font-size: 13px; font-weight: 500;
-      color: var(--color-text-muted);
-      transition: color 300ms ease;
-    }
-    .stage-item.active { color: var(--color-text-primary); font-weight: 700; }
-    .stage-item.done { color: var(--color-text-secondary); }
-    .stage-item .dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: #333;
-      transition: background 300ms ease;
-    }
-    .stage-item.active .dot {
-      background: var(--color-text-primary);
-      box-shadow: 0 0 0 4px rgba(255,255,255,0.1);
-    }
-    .stage-item.done .dot {
-      background: var(--color-text-primary);
-    }
-
-    /* Player */
+    /* ---------- Domain: Player surface (Signal-specific) ---------- */
     .player-header {
       display: flex; justify-content: space-between; align-items: center;
       padding: 8px 0 16px;
@@ -358,7 +89,7 @@
       max-height: 280px;
       margin: 0 auto 24px;
       border-radius: var(--radius-hero);
-      background: linear-gradient(135deg, #1a1a1a, #050505);
+      background: linear-gradient(135deg, var(--color-surface-card), var(--color-surface-canvas));
       display: flex; align-items: center; justify-content: center;
       position: relative;
       overflow: hidden;
@@ -367,7 +98,7 @@
     .player-artwork .signal-mark {
       font-size: 72px; font-weight: 900;
       letter-spacing: -3px;
-      background: linear-gradient(180deg, #fff, #888);
+      background: linear-gradient(180deg, var(--color-text-primary), var(--color-text-muted));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -391,7 +122,6 @@
       0%, 100% { height: 20%; }
       50% { height: 80%; }
     }
-
     .player-meta { text-align: center; margin-bottom: 24px; }
     .player-meta .title {
       font-size: 17px; font-weight: 700;
@@ -401,10 +131,7 @@
     .player-meta .speakers {
       font-size: 13px; color: var(--color-text-secondary);
     }
-
-    .scrubber {
-      margin-bottom: 16px;
-    }
+    .scrubber { margin-bottom: 16px; }
     .scrubber-track {
       width: 100%;
       height: 4px;
@@ -435,7 +162,6 @@
       color: var(--color-text-muted);
       font-variant-numeric: tabular-nums;
     }
-
     .player-controls {
       display: flex; justify-content: center; align-items: center;
       gap: 24px;
@@ -449,17 +175,18 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 28px;
       transition: transform 80ms ease;
+      border: none;
     }
     .player-controls .btn-play:active { transform: scale(0.95); }
     .player-controls .btn-skip {
       width: 56px; height: 56px;
       color: var(--color-text-primary);
       display: flex; align-items: center; justify-content: center;
-      font-size: 24px;
+      background: none; border: none;
     }
     .player-controls .btn-skip:active { opacity: 0.5; }
 
-    /* Transcript */
+    /* ---------- Domain: Transcript paragraph (Signal-specific) ---------- */
     .transcript {
       background: var(--color-surface-panel);
       border-radius: var(--radius-card);
@@ -473,16 +200,11 @@
       border-bottom: 1px solid var(--color-border-subtle);
       margin-bottom: 4px;
     }
-    .transcript-header .label {
-      font-size: 11px; font-weight: 600;
-      color: var(--color-text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
     .transcript-paragraph {
       padding: 14px 16px;
       border-bottom: 1px solid var(--color-border-subtle);
       transition: background 200ms ease;
+      cursor: pointer;
     }
     .transcript-paragraph:last-child { border-bottom: none; }
     .transcript-paragraph.active {
@@ -492,168 +214,13 @@
       display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 8px;
     }
-    .speaker-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 11px; font-weight: 700;
-      letter-spacing: 0.3px;
-    }
-    .speaker-badge .dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-    .speaker-badge.peter .dot { background: #60A5FA; }
-    .speaker-badge.emad .dot { background: #22C55E; }
-    .speaker-badge.dave .dot { background: #FB923C; }
-    .timestamp-btn {
-      font-size: 11px; font-weight: 700;
-      color: var(--color-text-secondary);
-      padding: 4px 8px;
-      background: var(--color-surface-card);
-      border-radius: 8px;
-      font-variant-numeric: tabular-nums;
-      transition: all 150ms ease;
-    }
-    .timestamp-btn:active {
-      background: var(--color-text-primary);
-      color: var(--color-text-inverse);
-    }
-    .timestamp-btn:hover { background: var(--color-surface-hover); }
     .transcript-paragraph .text {
       font-size: 14px;
       line-height: 1.5;
       color: var(--color-text-primary);
     }
 
-    /* Library */
-    .library-list { display: flex; flex-direction: column; gap: 12px; }
-    .library-item {
-      background: var(--color-surface-card);
-      border-radius: var(--radius-card);
-      padding: 14px;
-      display: flex; gap: 12px;
-      border: 1px solid var(--color-border-subtle);
-      transition: background 150ms ease;
-    }
-    .library-item:active { background: var(--color-surface-hover); }
-    .library-thumb {
-      width: 56px; height: 56px;
-      border-radius: var(--radius-save-button);
-      background: linear-gradient(135deg, #1a1a1a, #050505);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 24px;
-      flex-shrink: 0;
-    }
-    .library-content { flex: 1; min-width: 0; }
-    .library-content .title {
-      font-size: 14px; font-weight: 700;
-      margin-bottom: 4px;
-      overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-      line-height: 1.3;
-    }
-    .library-content .meta {
-      font-size: 11px; color: var(--color-text-muted);
-      display: flex; gap: 6px; flex-wrap: wrap;
-    }
-    .library-content .sep { opacity: 0.5; }
-
-    /* Empty states */
-    .empty-state {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center;
-      padding: 60px 20px;
-      min-height: 60vh;
-      gap: 12px;
-    }
-    .empty-state .icon { font-size: 48px; opacity: 0.3; margin-bottom: 12px; }
-    .empty-state .title { font-size: 18px; font-weight: 700; }
-    .empty-state .sub { font-size: 13px; color: var(--color-text-muted); max-width: 260px; }
-
-    /* Bottom nav */
-    .bottom-nav {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 74px;
-      background: var(--color-surface-nav);
-      border-top: 1px solid var(--color-border-subtle);
-      display: flex;
-      padding-bottom: env(safe-area-inset-bottom, 0);
-    }
-    .bottom-nav button {
-      flex: 1;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 2px;
-      color: var(--color-text-muted);
-      font-size: 11px; font-weight: 400;
-      padding-top: 8px;
-    }
-    .bottom-nav button.active {
-      color: var(--color-text-primary);
-      font-weight: 700;
-    }
-    .bottom-nav button .icon {
-      font-size: 22px;
-      line-height: 1;
-    }
-
-    /* Toast */
-    .toast {
-      position: absolute;
-      bottom: 100px; left: 20px; right: 20px;
-      background: var(--color-surface-panel);
-      border: 1px solid var(--color-border-base);
-      border-radius: var(--radius-well);
-      padding: 14px 16px;
-      font-size: 13px; font-weight: 600;
-      display: none;
-      animation: toastIn 250ms ease-out;
-      z-index: 100;
-    }
-    .toast.show { display: block; }
-    @keyframes toastIn {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    /* Section spacer */
-    .spacer-md { height: 16px; }
-    .spacer-lg { height: 24px; }
-    .spacer-xl { height: 32px; }
-
-    /* Sticky header */
-    .sticky-header {
-      position: sticky; top: 0;
-      background: var(--color-surface-canvas);
-      padding: 16px 0 12px;
-      z-index: 10;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-
-    /* Mini recent card */
-    .recent-row {
-      display: flex; align-items: center;
-      gap: 12px;
-      padding: 12px;
-      background: var(--color-surface-card);
-      border-radius: var(--radius-save-button);
-      border: 1px solid var(--color-border-subtle);
-    }
-    .recent-row:active { background: var(--color-surface-hover); }
-
-    /* Error state */
-    .error-banner {
-      background: rgba(239, 68, 68, 0.1);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #fecaca;
-      padding: 12px 16px;
-      border-radius: var(--radius-well);
-      font-size: 13px; font-weight: 600;
-      display: none;
-      margin-bottom: 12px;
-    }
-    .error-banner.show { display: block; }
-
-    /* Share sheet mock */
+    /* ---------- Domain: Share sheet (mock iOS, Signal-specific) ---------- */
     .share-overlay {
       position: absolute; inset: 0;
       background: rgba(0,0,0,0.7);
@@ -717,27 +284,11 @@
       text-align: center;
       width: 100%;
     }
-
-    /* Utility */
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
-    .hidden { display: none !important; }
-
-    /* Back button */
-    .back-btn {
-      display: flex; align-items: center;
-      gap: 4px;
-      color: var(--color-text-primary);
-      font-size: 14px; font-weight: 600;
-      padding: 8px 4px;
-      margin-left: -4px;
-    }
-
   </style>
 </head>
 <body>
   <div id="app" class="phone-frame">
-    <!-- Status bar -->
-    <div class="status-bar">
+    <div class="phone-status-bar">
       <span>9:41</span>
       <span class="right">
         <span style="font-size:11px; font-weight:600;">signal</span>
@@ -746,14 +297,13 @@
     </div>
 
     <!-- ============================================
-         SCREEN 1: HOME
-         JTBD 1 (paste & compress) + JTBD 8 (paste and be done)
+         SCREEN 1: HOME — JTBD 1, 8
          ============================================ -->
     <section id="screen-home" class="screen active">
       <div class="screen-content">
         <div style="padding-top: 8px; display: flex; justify-content: space-between; align-items: center;">
           <div class="brand-lockup">
-            <span class="signal">signal</span><span class="dot"></span>
+            <span class="brand-lockup-primary">signal</span><span class="brand-lockup-dot"></span>
           </div>
           <button class="btn-icon" onclick="showToast('Settings — v2')">⚙</button>
         </div>
@@ -766,44 +316,42 @@
         </p>
 
         <div id="paste-error" class="error-banner">Couldn't read that link. Try a YouTube or podcast URL.</div>
+        <div class="spacer-sm"></div>
 
-        <textarea id="paste-input" class="paste-field" rows="3"
+        <textarea id="paste-input" class="input input-large" rows="3"
           placeholder="https://youtube.com/watch?v=..."
           autocomplete="off" autocapitalize="off" spellcheck="false"></textarea>
 
         <div class="spacer-md"></div>
 
-        <button id="btn-compress" class="btn-primary" onclick="handlePaste()">Compress</button>
+        <button id="btn-compress" class="btn btn-primary" onclick="handlePaste()">Compress</button>
 
         <div class="spacer-xl"></div>
 
         <div class="t-section-label" style="margin-bottom: 12px;">Recent</div>
-        <div id="recent-list" style="display: flex; flex-direction: column; gap: 8px;">
-          <!-- Filled by JS -->
-        </div>
+        <div id="recent-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
       </div>
     </section>
 
     <!-- ============================================
-         SCREEN 2: INGEST CONFIG
-         JTBD 5 (pick compression depth with recommendation)
+         SCREEN 2: INGEST CONFIG — JTBD 5
          ============================================ -->
     <section id="screen-config" class="screen">
       <div class="screen-content">
-        <div class="sticky-header">
-          <button class="back-btn" onclick="showScreen('home')">
-            <span style="font-size:20px;">‹</span> Back
+        <div class="screen-header">
+          <button class="screen-header-back" onclick="showScreen('home')">
+            <span class="screen-header-back-arrow">‹</span> Back
           </button>
           <button class="btn-ghost" onclick="showScreen('home')">Cancel</button>
         </div>
 
         <div class="spacer-md"></div>
 
-        <div class="source-preview" id="source-preview">
-          <div class="source-thumb"><span class="thumb-emoji">🎙️</span></div>
-          <div class="source-info">
-            <div class="title" id="src-title">Peter Diamandis — Moonshots with Emad Mostaque & Dave Blundin</div>
-            <div class="meta">
+        <div class="media-preview" id="source-preview">
+          <div class="media-preview-thumb">🎙️</div>
+          <div class="media-preview-info">
+            <div class="media-preview-title" id="src-title">Peter Diamandis — Moonshots with Emad Mostaque & Dave Blundin</div>
+            <div class="media-preview-meta">
               <span id="src-duration">2h 04m</span><span class="sep">·</span>
               <span id="src-speakers">3 speakers</span><span class="sep">·</span>
               <span>YouTube</span>
@@ -814,9 +362,9 @@
         <div class="spacer-xl"></div>
 
         <div class="t-section-label" style="margin-bottom: 10px;">Signal's recommendation</div>
-        <div class="recommendation">
-          <span class="icon">✦</span>
-          <span class="text">
+        <div class="ai-callout">
+          <span class="ai-callout-icon">✦</span>
+          <span class="ai-callout-text">
             Dense tech interview with 3 distinct speakers and ~40 substantive claims. Recommend <strong>Balanced (12 min)</strong> — preserves speaker turns and key arguments without losing nuance.
           </span>
         </div>
@@ -824,21 +372,21 @@
         <div class="spacer-xl"></div>
 
         <div class="t-section-label" style="margin-bottom: 12px;">Compression depth</div>
-        <div class="preset-picker" id="preset-picker">
-          <button class="preset-btn" data-preset="tight" onclick="selectPreset('tight')">
-            Tight<span class="mins">6 min</span>
+        <div class="segmented" data-cols="3" id="preset-picker">
+          <button class="segmented-btn" data-preset="tight" onclick="selectPreset('tight')">
+            Tight<span class="segmented-btn-sub">6 min</span>
           </button>
-          <button class="preset-btn active" data-preset="balanced" onclick="selectPreset('balanced')">
-            Balanced<span class="mins">12 min</span>
+          <button class="segmented-btn active" data-preset="balanced" onclick="selectPreset('balanced')">
+            Balanced<span class="segmented-btn-sub">12 min</span>
           </button>
-          <button class="preset-btn" data-preset="detailed" onclick="selectPreset('detailed')">
-            Detailed<span class="mins">20 min</span>
+          <button class="segmented-btn" data-preset="detailed" onclick="selectPreset('detailed')">
+            Detailed<span class="segmented-btn-sub">20 min</span>
           </button>
         </div>
 
         <div class="spacer-xl"></div>
 
-        <div style="background: var(--color-surface-panel); border-radius: var(--radius-card); padding: 16px; border: 1px solid var(--color-border-subtle);">
+        <div class="card-panel">
           <div class="t-section-label" style="margin-bottom: 8px;">What you'll get</div>
           <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; color: var(--color-text-secondary); line-height: 1.8;">
             <li>· Speaker-attributed audio (ElevenLabs)</li>
@@ -849,28 +397,28 @@
 
         <div class="spacer-xl"></div>
 
-        <button class="btn-primary" onclick="startProcessing()">Start compressing</button>
+        <button class="btn btn-primary" onclick="startProcessing()">Start compressing</button>
 
         <div class="spacer-md"></div>
       </div>
     </section>
 
     <!-- ============================================
-         SCREEN 3: PROCESSING
+         SCREEN 3: PROCESSING — uses DS ProcessingFlow
          ============================================ -->
     <section id="screen-processing" class="screen">
       <div class="screen-content">
-        <div class="processing-wrap">
+        <div class="processing-flow">
           <div class="pulse-ring"></div>
           <div>
-            <div class="processing-stage" id="stage-text">Transcribing audio...</div>
-            <div class="processing-sub" id="stage-sub">Extracting speech from source</div>
+            <div class="processing-stage-text" id="stage-text">Transcribing audio...</div>
+            <div class="processing-stage-sub" id="stage-sub">Extracting speech from source</div>
           </div>
           <div class="stage-checklist" id="stage-list">
-            <div class="stage-item active" data-stage="1"><span class="dot"></span> Transcribing</div>
-            <div class="stage-item" data-stage="2"><span class="dot"></span> Identifying speakers</div>
-            <div class="stage-item" data-stage="3"><span class="dot"></span> Compressing</div>
-            <div class="stage-item" data-stage="4"><span class="dot"></span> Synthesizing voice</div>
+            <div class="stage-item active" data-stage="1"><span class="stage-dot"></span> Transcribing</div>
+            <div class="stage-item" data-stage="2"><span class="stage-dot"></span> Identifying speakers</div>
+            <div class="stage-item" data-stage="3"><span class="stage-dot"></span> Compressing</div>
+            <div class="stage-item" data-stage="4"><span class="stage-dot"></span> Synthesizing voice</div>
           </div>
           <button class="btn-ghost" onclick="cancelProcessing()" style="margin-top: 16px;">Cancel</button>
         </div>
@@ -878,14 +426,13 @@
     </section>
 
     <!-- ============================================
-         SCREEN 4: PLAYER
-         JTBD 2 (listen in background) + JTBD 3 (tap to verify) + JTBD 4 (speaker attribution)
+         SCREEN 4: PLAYER — JTBD 2, 3, 4
          ============================================ -->
     <section id="screen-player" class="screen">
       <div class="screen-content">
         <div class="player-header">
-          <button class="back-btn" onclick="backFromPlayer()">
-            <span style="font-size:20px;">‹</span>
+          <button class="screen-header-back" onclick="backFromPlayer()">
+            <span class="screen-header-back-arrow">‹</span>
           </button>
           <button class="btn-icon" onclick="openShareSheet()" aria-label="Share">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
@@ -893,9 +440,7 @@
         </div>
 
         <div class="player-artwork">
-          <div class="waveform-bg" id="waveform">
-            <!-- bars injected by JS -->
-          </div>
+          <div class="waveform-bg" id="waveform"></div>
           <span class="signal-mark">s.</span>
         </div>
 
@@ -934,11 +479,9 @@
 
         <div class="transcript" id="transcript">
           <div class="transcript-header">
-            <span class="label">Transcript · tap timestamps to verify</span>
+            <span class="t-section-label">Transcript · tap timestamps to verify</span>
           </div>
-          <div id="transcript-body">
-            <!-- paragraphs injected by JS -->
-          </div>
+          <div id="transcript-body"></div>
         </div>
 
         <div class="spacer-xl"></div>
@@ -946,25 +489,19 @@
     </section>
 
     <!-- ============================================
-         SCREEN 5: LIBRARY
-         JTBD 6 (revisit past)
+         SCREEN 5: LIBRARY — JTBD 6
          ============================================ -->
     <section id="screen-library" class="screen">
       <div class="screen-content">
-        <div class="sticky-header" style="display:block; padding-top:16px;">
+        <div class="screen-header" style="display:block;">
           <h1 class="t-screen-title">Library</h1>
         </div>
         <div class="spacer-md"></div>
-        <div id="library-body">
-          <!-- Filled by JS -->
-        </div>
+        <div id="library-body"></div>
       </div>
     </section>
 
-    <!-- ============================================
-         Share sheet overlay (mock iOS)
-         JTBD 7
-         ============================================ -->
+    <!-- Share sheet overlay — JTBD 7 -->
     <div id="share-overlay" class="share-overlay" onclick="closeShareSheet(event)">
       <div class="share-sheet" onclick="event.stopPropagation()">
         <div class="share-handle"></div>
@@ -986,66 +523,57 @@
       </div>
     </div>
 
-    <!-- ============================================
-         Bottom nav
-         ============================================ -->
+    <!-- Bottom nav — uses DS primitive -->
     <nav class="bottom-nav" id="bottom-nav">
-      <button class="active" data-nav="home" onclick="showScreen('home')">
-        <span class="icon">▢</span>
+      <button class="bottom-nav-btn active" data-nav="home" onclick="showScreen('home')">
+        <span class="bottom-nav-btn-icon">▢</span>
         Home
       </button>
-      <button data-nav="library" onclick="showScreen('library')">
-        <span class="icon">☰</span>
+      <button class="bottom-nav-btn" data-nav="library" onclick="showScreen('library')">
+        <span class="bottom-nav-btn-icon">☰</span>
         Library
       </button>
     </nav>
 
-    <!-- Toast -->
     <div id="toast" class="toast"></div>
-
   </div>
 
   <script>
     // ============================================================
-    // SIGNAL — Prototype JS
-    // State, navigation, mock data, playback simulation.
+    // SIGNAL — Prototype JS (unchanged from v1)
     // ============================================================
 
-    // ---------- Mock compression data ----------
-    // Realistic compression of the Moonshots podcast Jason mentioned.
     const MOCK_COMPRESSION = {
       id: 'moonshots-emad-dave-2026',
       sourceUrl: 'https://www.youtube.com/watch?v=example',
       sourceTitle: 'Peter Diamandis — Moonshots with Emad Mostaque & Dave Blundin',
       playerTitle: 'Moonshots: Emad Mostaque & Dave Blundin on the AI frontier',
       speakers: ['Peter Diamandis', 'Emad Mostaque', 'Dave Blundin'],
-      originalDuration: 7440, // 2h 04m in seconds
-      compressedDuration: 720, // 12:00 in seconds
+      originalDuration: 7440,
+      compressedDuration: 720,
       savedAt: Date.now(),
       paragraphs: [
-        { speaker: 'peter', name: 'Peter', sourceTime: 62, text: "Welcome to Moonshots. Today I'm with Emad Mostaque, founder of Stability AI and now Intelligent Internet, and Dave Blundin from Link Ventures. The conversation: where does compute actually bottleneck human progress over the next five years." },
-        { speaker: 'emad', name: 'Emad', sourceTime: 215, text: "The thesis is that intelligence is becoming a commodity. By 2027 we will have superhuman coding, superhuman reasoning at inference costs approaching zero. The bottleneck is no longer the model — it's the application, the data access, and the distribution." },
-        { speaker: 'dave', name: 'Dave', sourceTime: 487, text: "What I see in the portfolio is that the winners aren't the model builders — they're the companies embedding these models into existing workflows where the data is proprietary and the workflow is ugly. Clinical documentation, legal review, supply chain." },
-        { speaker: 'peter', name: 'Peter', sourceTime: 812, text: "Emad, you've said publicly you think AGI arrives on current hardware. Walk through the math." },
-        { speaker: 'emad', name: 'Emad', sourceTime: 861, text: "Two claims. First: algorithmic improvements give us roughly 10× per year for the next three years — better objectives, better data curation, better RL. Second: existing GPU supply is enough to train a model at GPT-7 scale by end of 2027. We don't need new silicon. We need better training recipes." },
-        { speaker: 'dave', name: 'Dave', sourceTime: 1244, text: "I push back on the timeline — not the direction. Investors hear 'AGI 2027' and make decisions as if it's binary. The value capture happens in a much messier middle — 2028, 2029, 2030 — where capability exceeds deployment by years. That gap is the opportunity." },
-        { speaker: 'peter', name: 'Peter', sourceTime: 1740, text: "Health is my obsession. Where does AI hit medicine first — and where does it get blocked?" },
-        { speaker: 'emad', name: 'Emad', sourceTime: 1801, text: "First: documentation. Ambient scribing is already replacing 30 percent of physician note-taking time. Second: triage. An AI reading an EHR plus recent labs can flag the patient at risk faster than a human can review the chart. Blocked: anything that requires a liability chain. The FDA is not ready for generative diagnosis." },
-        { speaker: 'dave', name: 'Dave', sourceTime: 2412, text: "The capital-efficient plays in health AI right now are the ones that make an existing clinician 3× more productive, not the ones that replace the clinician. Replacement requires regulatory, replacement requires trust, replacement requires payer alignment. Augmentation needs none of that." },
-        { speaker: 'peter', name: 'Peter', sourceTime: 2960, text: "Let's close on the existential question. Ten years out — what does the day of a knowledge worker look like?" },
-        { speaker: 'emad', name: 'Emad', sourceTime: 3011, text: "Most knowledge workers will be orchestrators of AI systems. The question is whether we compress that shift into three years or ten. If it's three, the economic disruption is severe and policy has not caught up. If it's ten, we transition smoothly." },
-        { speaker: 'dave', name: 'Dave', sourceTime: 3398, text: "The humans who survive well are the ones with taste. Taste is the thing models don't have — they generate the mean of their training data. Anyone whose value is in decision quality, in knowing what to build, in knowing what's beautiful — they get dramatically more leverage." }
+        { speaker: 'peter', zone: '1', name: 'Peter', sourceTime: 62, text: "Welcome to Moonshots. Today I'm with Emad Mostaque, founder of Stability AI and now Intelligent Internet, and Dave Blundin from Link Ventures. The conversation: where does compute actually bottleneck human progress over the next five years." },
+        { speaker: 'emad',  zone: '2', name: 'Emad',  sourceTime: 215, text: "The thesis is that intelligence is becoming a commodity. By 2027 we will have superhuman coding, superhuman reasoning at inference costs approaching zero. The bottleneck is no longer the model — it's the application, the data access, and the distribution." },
+        { speaker: 'dave',  zone: '4', name: 'Dave',  sourceTime: 487, text: "What I see in the portfolio is that the winners aren't the model builders — they're the companies embedding these models into existing workflows where the data is proprietary and the workflow is ugly. Clinical documentation, legal review, supply chain." },
+        { speaker: 'peter', zone: '1', name: 'Peter', sourceTime: 812, text: "Emad, you've said publicly you think AGI arrives on current hardware. Walk through the math." },
+        { speaker: 'emad',  zone: '2', name: 'Emad',  sourceTime: 861, text: "Two claims. First: algorithmic improvements give us roughly 10× per year for the next three years — better objectives, better data curation, better RL. Second: existing GPU supply is enough to train a model at GPT-7 scale by end of 2027. We don't need new silicon. We need better training recipes." },
+        { speaker: 'dave',  zone: '4', name: 'Dave',  sourceTime: 1244, text: "I push back on the timeline — not the direction. Investors hear 'AGI 2027' and make decisions as if it's binary. The value capture happens in a much messier middle — 2028, 2029, 2030 — where capability exceeds deployment by years. That gap is the opportunity." },
+        { speaker: 'peter', zone: '1', name: 'Peter', sourceTime: 1740, text: "Health is my obsession. Where does AI hit medicine first — and where does it get blocked?" },
+        { speaker: 'emad',  zone: '2', name: 'Emad',  sourceTime: 1801, text: "First: documentation. Ambient scribing is already replacing 30 percent of physician note-taking time. Second: triage. An AI reading an EHR plus recent labs can flag the patient at risk faster than a human can review the chart. Blocked: anything that requires a liability chain. The FDA is not ready for generative diagnosis." },
+        { speaker: 'dave',  zone: '4', name: 'Dave',  sourceTime: 2412, text: "The capital-efficient plays in health AI right now are the ones that make an existing clinician 3× more productive, not the ones that replace the clinician. Replacement requires regulatory, replacement requires trust, replacement requires payer alignment. Augmentation needs none of that." },
+        { speaker: 'peter', zone: '1', name: 'Peter', sourceTime: 2960, text: "Let's close on the existential question. Ten years out — what does the day of a knowledge worker look like?" },
+        { speaker: 'emad',  zone: '2', name: 'Emad',  sourceTime: 3011, text: "Most knowledge workers will be orchestrators of AI systems. The question is whether we compress that shift into three years or ten. If it's three, the economic disruption is severe and policy has not caught up. If it's ten, we transition smoothly." },
+        { speaker: 'dave',  zone: '4', name: 'Dave',  sourceTime: 3398, text: "The humans who survive well are the ones with taste. Taste is the thing models don't have — they generate the mean of their training data. Anyone whose value is in decision quality, in knowing what to build, in knowing what's beautiful — they get dramatically more leverage." }
       ]
     };
 
-    // Timings of each paragraph in the COMPRESSED 12-min audio (evenly distributed with slight variation)
     const TOTAL_COMPRESSED = 720;
     MOCK_COMPRESSION.paragraphs.forEach((p, i, arr) => {
       p.compressedTime = Math.round((i / arr.length) * TOTAL_COMPRESSED);
       p.compressedEnd = Math.round(((i + 1) / arr.length) * TOTAL_COMPRESSED);
     });
 
-    // ---------- App state ----------
     const State = {
       currentScreen: 'home',
       currentPreset: 'balanced',
@@ -1059,59 +587,38 @@
       processingTimers: [],
     };
 
-    // ---------- Storage ----------
     const STORAGE_KEY = 'signal.library';
-
     function loadLibrary() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : [];
-      } catch { return []; }
+      try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : []; }
+      catch { return []; }
     }
     function saveToLibrary(item) {
       const lib = loadLibrary();
       const existing = lib.findIndex(x => x.id === item.id);
-      if (existing >= 0) lib[existing] = item;
-      else lib.unshift(item);
+      if (existing >= 0) lib[existing] = item; else lib.unshift(item);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(lib.slice(0, 50)));
     }
-
-    // ---------- Seed first-run ----------
     function seedIfEmpty() {
       const lib = loadLibrary();
       if (lib.length === 0) {
-        // Seed with a demo entry so the library isn't empty on first run
-        saveToLibrary({
-          ...MOCK_COMPRESSION,
-          savedAt: Date.now() - (1000 * 60 * 60 * 18) // 18h ago
-        });
+        saveToLibrary({ ...MOCK_COMPRESSION, savedAt: Date.now() - (1000 * 60 * 60 * 18) });
       }
     }
 
-    // ---------- Navigation ----------
     function showScreen(name) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       const el = document.getElementById('screen-' + name);
-      if (el) {
-        el.classList.add('active');
-        el.scrollTop = 0;
-      }
+      if (el) { el.classList.add('active'); el.scrollTop = 0; }
       State.currentScreen = name;
 
-      // Bottom nav highlight
-      document.querySelectorAll('#bottom-nav button').forEach(b => b.classList.remove('active'));
-      const navBtn = document.querySelector(`#bottom-nav button[data-nav="${name}"]`);
+      document.querySelectorAll('.bottom-nav-btn').forEach(b => b.classList.remove('active'));
+      const navBtn = document.querySelector(`.bottom-nav-btn[data-nav="${name}"]`);
       if (navBtn) navBtn.classList.add('active');
 
-      // Show/hide nav depending on screen
       const nav = document.getElementById('bottom-nav');
-      if (['processing', 'config'].includes(name)) {
-        nav.style.display = 'none';
-      } else {
-        nav.style.display = 'flex';
-      }
+      if (['processing', 'config'].includes(name)) nav.style.display = 'none';
+      else nav.style.display = 'flex';
 
-      // Render content based on screen
       if (name === 'home') renderRecent();
       if (name === 'library') renderLibrary();
       if (name === 'player') renderPlayer();
@@ -1122,7 +629,6 @@
       showScreen(loadLibrary().length > 1 ? 'library' : 'home');
     }
 
-    // ---------- Home ----------
     function renderRecent() {
       const list = document.getElementById('recent-list');
       const lib = loadLibrary().slice(0, 3);
@@ -1131,75 +637,59 @@
         return;
       }
       list.innerHTML = lib.map(item => `
-        <button class="recent-row" onclick="openCompression('${item.id}')" style="width:100%; text-align:left;">
-          <div class="library-thumb" style="width:40px; height:40px; font-size:18px;">🎙️</div>
-          <div style="flex:1; min-width:0;">
+        <button class="list-row list-row-compact" onclick="openCompression('${item.id}')">
+          <div class="list-row-thumb list-row-thumb-sm">🎙️</div>
+          <div class="list-row-content">
             <div style="font-size: 13px; font-weight: 700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(item.playerTitle || item.sourceTitle)}</div>
-            <div class="t-meta">${formatDuration(item.compressedDuration)} · ${timeAgo(item.savedAt)}</div>
+            <div class="list-row-meta">${formatDuration(item.compressedDuration)}<span class="sep">·</span>${timeAgo(item.savedAt)}</div>
           </div>
-          <span style="color: var(--color-text-muted); font-size: 20px;">›</span>
+          <span class="list-row-chevron">›</span>
         </button>
       `).join('');
     }
 
-    // ---------- Paste handler ----------
     function handlePaste() {
       const input = document.getElementById('paste-input');
       const url = input.value.trim();
       const errBanner = document.getElementById('paste-error');
-
       if (!url) {
         errBanner.textContent = 'Paste a link first.';
         errBanner.classList.add('show');
-        setTimeout(() => errBanner.classList.remove('show'), 3000);
-        return;
+        setTimeout(() => errBanner.classList.remove('show'), 3000); return;
       }
-
-      // Accept YouTube, podcast, or any http(s) URL for prototype
       const isValid = /^https?:\/\//i.test(url);
       if (!isValid) {
         errBanner.textContent = "Couldn't read that link. Try a YouTube or podcast URL.";
         errBanner.classList.add('show');
-        setTimeout(() => errBanner.classList.remove('show'), 3000);
-        return;
+        setTimeout(() => errBanner.classList.remove('show'), 3000); return;
       }
-
       errBanner.classList.remove('show');
-
-      // For the prototype, always route to the Moonshots mock
-      // In a real build, we'd detect the source and fetch metadata
       document.getElementById('src-title').textContent = MOCK_COMPRESSION.sourceTitle;
       document.getElementById('src-duration').textContent = '2h 04m';
       document.getElementById('src-speakers').textContent = '3 speakers';
-
       showScreen('config');
     }
 
-    // ---------- Config ----------
     function selectPreset(preset) {
       State.currentPreset = preset;
-      document.querySelectorAll('#preset-picker .preset-btn').forEach(b => {
+      document.querySelectorAll('#preset-picker .segmented-btn').forEach(b => {
         b.classList.toggle('active', b.dataset.preset === preset);
       });
     }
 
-    // ---------- Processing ----------
     function startProcessing() {
       showScreen('processing');
       const stages = [
-        { text: 'Transcribing audio...',       sub: 'Extracting speech from source',        delay: 1400 },
-        { text: 'Identifying speakers...',     sub: 'Matching voices to 3 distinct speakers', delay: 1600 },
-        { text: 'Compressing...',              sub: 'Preserving key claims with attribution',  delay: 1800 },
-        { text: 'Synthesizing voice...',       sub: 'Rendering ElevenLabs audio',             delay: 1600 },
+        { text: 'Transcribing audio...',   sub: 'Extracting speech from source',         delay: 1400 },
+        { text: 'Identifying speakers...', sub: 'Matching voices to 3 distinct speakers', delay: 1600 },
+        { text: 'Compressing...',          sub: 'Preserving key claims with attribution', delay: 1800 },
+        { text: 'Synthesizing voice...',   sub: 'Rendering ElevenLabs audio',             delay: 1600 },
       ];
-
       let t = 0;
       stages.forEach((stage, i) => {
         const timeout = setTimeout(() => {
           document.getElementById('stage-text').textContent = stage.text;
           document.getElementById('stage-sub').textContent = stage.sub;
-
-          // Mark done/active
           document.querySelectorAll('.stage-item').forEach((el, idx) => {
             el.classList.remove('active', 'done');
             if (idx < i) el.classList.add('done');
@@ -1209,23 +699,14 @@
         State.processingTimers.push(timeout);
         t += stage.delay;
       });
-
-      // Finish
       const finishTimeout = setTimeout(() => {
         document.querySelectorAll('.stage-item').forEach(el => {
-          el.classList.remove('active');
-          el.classList.add('done');
+          el.classList.remove('active'); el.classList.add('done');
         });
         document.getElementById('stage-text').textContent = 'Ready.';
         document.getElementById('stage-sub').textContent = '12 minutes of Signal.';
-
         setTimeout(() => {
-          // Save new compression
-          const newItem = {
-            ...MOCK_COMPRESSION,
-            id: 'moonshots-' + Date.now(),
-            savedAt: Date.now()
-          };
+          const newItem = { ...MOCK_COMPRESSION, id: 'moonshots-' + Date.now(), savedAt: Date.now() };
           saveToLibrary(newItem);
           State.activeCompression = newItem;
           showScreen('player');
@@ -1240,7 +721,6 @@
       showScreen('home');
     }
 
-    // ---------- Player ----------
     function openCompression(id) {
       const lib = loadLibrary();
       const item = lib.find(x => x.id === id);
@@ -1253,12 +733,10 @@
     function renderPlayer() {
       const c = State.activeCompression || loadLibrary()[0] || MOCK_COMPRESSION;
       State.activeCompression = c;
-
       document.getElementById('player-title').textContent = c.playerTitle || c.sourceTitle;
       document.getElementById('player-speakers').textContent = c.speakers.join(' · ');
       document.getElementById('time-total').textContent = formatTime(c.compressedDuration);
 
-      // Waveform bars
       const wf = document.getElementById('waveform');
       if (wf.children.length === 0) {
         for (let i = 0; i < 48; i++) {
@@ -1270,15 +748,15 @@
         }
       }
 
-      // Transcript
       const body = document.getElementById('transcript-body');
       body.innerHTML = c.paragraphs.map((p, i) => `
         <div class="transcript-paragraph" data-idx="${i}" data-time="${p.compressedTime}">
           <div class="speaker-row">
-            <span class="speaker-badge ${p.speaker}">
-              <span class="dot"></span> ${escapeHtml(p.name.toUpperCase())}
+            <span class="badge bare">
+              <span class="badge-dot badge-dot--zone-${p.zone}"></span>
+              ${escapeHtml(p.name.toUpperCase())}
             </span>
-            <button class="timestamp-btn" onclick="jumpToSource(${p.sourceTime}); event.stopPropagation();">
+            <button class="source-link" onclick="jumpToSource(${p.sourceTime}); event.stopPropagation();">
               ${formatTime(p.sourceTime)} ↗
             </button>
           </div>
@@ -1286,17 +764,13 @@
         </div>
       `).join('');
 
-      // Tapping a paragraph scrubs the player to that paragraph
       body.querySelectorAll('.transcript-paragraph').forEach(el => {
         el.onclick = () => {
           const t = parseInt(el.dataset.time);
           State.currentTime = t;
           updateScrubber();
           updateActiveParagraph();
-          if (State.isPlaying) {
-            pausePlayback();
-            setTimeout(() => togglePlay(), 100);
-          }
+          if (State.isPlaying) { pausePlayback(); setTimeout(() => togglePlay(), 100); }
         };
       });
 
@@ -1308,16 +782,10 @@
     function togglePlay() {
       State.isPlaying = !State.isPlaying;
       document.getElementById('play-icon').textContent = State.isPlaying ? '❚❚' : '▶';
-
-      if (State.isPlaying) {
-        startPlayback();
-      } else {
-        pausePlayback();
-      }
+      if (State.isPlaying) startPlayback(); else pausePlayback();
     }
 
     function startPlayback() {
-      // Fake clock — real app would use actual audio element
       clearInterval(State.playInterval);
       State.playInterval = setInterval(() => {
         State.currentTime += 1;
@@ -1329,11 +797,7 @@
         updateScrubber();
         updateActiveParagraph();
       }, 1000);
-
-      // Speech synthesis: try to speak the current paragraph for real audio feedback
       speakFromCurrentTime();
-
-      // Media Session API — real lock-screen controls on iOS
       setupMediaSession();
     }
 
@@ -1342,31 +806,22 @@
       document.getElementById('play-icon').textContent = '▶';
       clearInterval(State.playInterval);
       State.playInterval = null;
-      if (window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-      }
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
       State.speechUtterance = null;
       State.currentUtteranceIdx = -1;
     }
 
     function speakFromCurrentTime() {
       if (!('speechSynthesis' in window)) return;
-      const c = State.activeCompression;
-      if (!c) return;
-
-      // Find current paragraph
+      const c = State.activeCompression; if (!c) return;
       const idx = findCurrentParagraphIdx();
       if (idx < 0 || idx === State.currentUtteranceIdx) return;
-
       window.speechSynthesis.cancel();
       State.currentUtteranceIdx = idx;
-
       const p = c.paragraphs[idx];
       const utter = new SpeechSynthesisUtterance(`${p.name}. ${p.text}`);
-      utter.rate = 1.05;
-      utter.pitch = 1;
+      utter.rate = 1.05; utter.pitch = 1;
       utter.onend = () => {
-        // Move to next paragraph if still playing
         if (State.isPlaying && State.currentUtteranceIdx === idx) {
           State.currentUtteranceIdx = -1;
           speakFromCurrentTime();
@@ -1396,11 +851,7 @@
       State.currentTime = Math.max(0, Math.min(State.duration, State.currentTime + delta));
       updateScrubber();
       updateActiveParagraph();
-      if (State.isPlaying) {
-        // Restart speech from new position
-        State.currentUtteranceIdx = -1;
-        speakFromCurrentTime();
-      }
+      if (State.isPlaying) { State.currentUtteranceIdx = -1; speakFromCurrentTime(); }
     }
 
     function scrubTo(e) {
@@ -1411,10 +862,7 @@
       State.currentTime = Math.round(pct * State.duration);
       updateScrubber();
       updateActiveParagraph();
-      if (State.isPlaying) {
-        State.currentUtteranceIdx = -1;
-        speakFromCurrentTime();
-      }
+      if (State.isPlaying) { State.currentUtteranceIdx = -1; speakFromCurrentTime(); }
     }
 
     function updateScrubber() {
@@ -1425,19 +873,13 @@
     }
 
     function jumpToSource(t) {
-      const c = State.activeCompression;
-      if (!c) return;
-      // For the prototype, show a toast and open YouTube in new tab with timestamp
-      const url = c.sourceUrl + '&t=' + Math.floor(t);
+      const c = State.activeCompression; if (!c) return;
       showToast(`Opening source at ${formatTime(t)} — ${c.speakers[0].split(' ')[0]}'s moment`);
-      // Uncomment for real YouTube deep link:
-      // window.open(url, '_blank');
     }
 
     function setupMediaSession() {
       if (!('mediaSession' in navigator)) return;
-      const c = State.activeCompression;
-      if (!c) return;
+      const c = State.activeCompression; if (!c) return;
       navigator.mediaSession.metadata = new MediaMetadata({
         title: c.playerTitle || c.sourceTitle,
         artist: c.speakers.join(', '),
@@ -1449,28 +891,27 @@
       navigator.mediaSession.setActionHandler('seekforward', () => skip(15));
     }
 
-    // ---------- Library ----------
     function renderLibrary() {
       const body = document.getElementById('library-body');
       const lib = loadLibrary();
       if (lib.length === 0) {
         body.innerHTML = `
           <div class="empty-state">
-            <div class="icon">◯</div>
-            <div class="title">No compressions yet</div>
-            <div class="sub">Paste a link on the home screen to compress your first podcast or video.</div>
-            <div style="margin-top: 16px;"><button class="btn-primary" style="width: auto; padding: 0 24px;" onclick="showScreen('home')">Go to home</button></div>
+            <div class="empty-state-icon">◯</div>
+            <div class="empty-state-title">No compressions yet</div>
+            <div class="empty-state-sub">Paste a link on the home screen to compress your first podcast or video.</div>
+            <div style="margin-top: 16px;"><button class="btn btn-primary" style="width: auto; padding: 0 24px;" onclick="showScreen('home')">Go to home</button></div>
           </div>`;
         return;
       }
       body.innerHTML = `
-        <div class="library-list">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
           ${lib.map(item => `
-            <button class="library-item" onclick="openCompression('${item.id}')" style="width:100%; text-align:left;">
-              <div class="library-thumb">🎙️</div>
-              <div class="library-content">
-                <div class="title">${escapeHtml(item.playerTitle || item.sourceTitle)}</div>
-                <div class="meta">
+            <button class="list-row" onclick="openCompression('${item.id}')">
+              <div class="list-row-thumb">🎙️</div>
+              <div class="list-row-content">
+                <div class="list-row-title">${escapeHtml(item.playerTitle || item.sourceTitle)}</div>
+                <div class="list-row-meta">
                   <span>${formatDuration(item.compressedDuration)}</span><span class="sep">·</span>
                   <span>${item.speakers.length} speakers</span><span class="sep">·</span>
                   <span>${timeAgo(item.savedAt)}</span>
@@ -1478,21 +919,16 @@
               </div>
             </button>
           `).join('')}
-        </div>
-      `;
+        </div>`;
     }
 
-    // ---------- Share sheet ----------
     function openShareSheet() {
-      // If Web Share API is available (real iOS share sheet), use it
       if (navigator.share) {
         navigator.share({
           title: State.activeCompression?.playerTitle || 'Signal compression',
           text: 'Compressed with Signal — ' + (State.activeCompression?.speakers || []).join(', '),
           url: window.location.href
-        }).catch(() => {
-          document.getElementById('share-overlay').classList.add('show');
-        });
+        }).catch(() => { document.getElementById('share-overlay').classList.add('show'); });
       } else {
         document.getElementById('share-overlay').classList.add('show');
       }
@@ -1502,7 +938,6 @@
       document.getElementById('share-overlay').classList.remove('show');
     }
 
-    // ---------- Utilities ----------
     function showToast(msg) {
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -1514,32 +949,22 @@
       const sec = Math.floor(s % 60).toString().padStart(2, '0');
       return `${m}:${sec}`;
     }
-    function formatDuration(s) {
-      const m = Math.floor(s / 60);
-      return `${m} min`;
-    }
+    function formatDuration(s) { return `${Math.floor(s / 60)} min`; }
     function timeAgo(ts) {
       const diff = Date.now() - ts;
-      const m = Math.floor(diff / 60000);
-      const h = Math.floor(diff / 3600000);
-      const d = Math.floor(diff / 86400000);
+      const m = Math.floor(diff / 60000), h = Math.floor(diff / 3600000), d = Math.floor(diff / 86400000);
       if (d > 0) return d + 'd ago';
       if (h > 0) return h + 'h ago';
       if (m > 0) return m + 'm ago';
       return 'just now';
     }
     function escapeHtml(s) {
-      return String(s).replace(/[&<>"']/g, ch => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-      }[ch]));
+      return String(s).replace(/[&<>"']/g, ch => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[ch]));
     }
 
-    // ---------- Init ----------
     document.addEventListener('DOMContentLoaded', () => {
       seedIfEmpty();
       showScreen('home');
-
-      // Prevent double-tap zoom on iOS
       let lastTap = 0;
       document.addEventListener('touchend', e => {
         const now = Date.now();

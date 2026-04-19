@@ -46,40 +46,35 @@
 
 
   /* ============================================================
-     VARIANT A — CLINICAL RESTRAINED (default; Meridian-style)
-     Uncomment + use for web/professional/EMR/enterprise.
+     VARIANT A — CLINICAL RESTRAINED (Meridian-style)
+     COMMENTED OUT for Signal. To activate: swap block comments.
      ============================================================ */
 
-  /* Surface ladder (luminance-stepped ≥1.12:1) */
+  /*
   --color-surface-canvas: #08090a;
   --color-surface-panel:  #17181b;
   --color-surface-card:   #24262a;
   --color-surface-hover:  #30333a;
 
-  /* Text (never pure white on near-black) */
   --color-text-primary:   #f7f8f8;
   --color-text-secondary: #d0d6e0;
   --color-text-muted:     #a8adb7;
   --color-text-inverse:   #08090a;
 
-  /* Borders */
   --color-border-subtle: #24262a;
   --color-border-base:   #35383e;
   --color-border-strong: #42464d;
 
-  /* Accent — single chromatic for CTA/active/selected */
   --color-accent-base:   #5e6ad2;
   --color-accent-hover:  #7170ff;
   --color-accent-bright: #828fff;
   --color-accent-light:  rgba(113, 112, 255, 0.08);
   --color-accent-tint:   rgba(113, 112, 255, 0.12);
 
-  /* Font weights (Linear-style, no bold ≥600) */
   --font-weight-regular: 400;
   --font-weight-ui:      510;
   --font-weight-strong:  590;
 
-  /* Type roles (role-keyed, not t-shirt-sized) */
   --type-caption-size: 12px; --type-caption-weight: 510; --type-caption-tracking: 0;
   --type-ui-size: 13px;      --type-ui-weight: 510;      --type-ui-tracking: -0.130px;
   --type-body-size: 15px;    --type-body-weight: 400;    --type-body-tracking: -0.165px;
@@ -91,7 +86,6 @@
 
   --font-floor: 12px;
 
-  /* Radius (tight, 2–12px) */
   --radius-xs: 2px;
   --radius-sm: 4px;
   --radius-default: 6px;
@@ -99,20 +93,18 @@
   --radius-lg: 12px;
   --radius-pill: 9999px;
 
-  /* Density — comfortable (default) */
   --density-row-height: 36px;
   --density-pad-y: 10px;
   --density-card-pad: 16px;
   --density-gap: 12px;
+  */
 
 
   /* ============================================================
      VARIANT B — EXPRESSIVE NATIVE (GOVO2-style)
-     To use: replace the Clinical block above with the values below.
-     Uncomment this block and comment out the Clinical block.
+     ACTIVE for Signal (mobile, OLED, athletic-adjacent fidelity).
      ============================================================ */
 
-  /*
   --color-surface-canvas: #000000;
   --color-surface-panel:  #111111;
   --color-surface-card:   #181818;
@@ -128,7 +120,7 @@
   --color-border-base:   #2A2A2A;
   --color-border-strong: #333333;
 
-  (No --color-accent-* — Expressive uses white CTAs + semantic zones.)
+  /* Expressive uses white CTAs + semantic zones, no single accent */
 
   --font-weight-regular: 400;
   --font-weight-medium:  600;
@@ -162,7 +154,6 @@
   --radius-button: 20px;
   --radius-hero: 24px;
   --radius-dot: 9999px;
-  */
 }
 
 /* ============================================================

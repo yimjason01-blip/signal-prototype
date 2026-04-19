@@ -1,0 +1,573 @@
+/* ============================================================
+   Jason's Generalist Design System — components.css
+   Optional companion to theme.css. Provides ready-to-use component
+   classes built on the token layer, for single-file HTML prototypes
+   and non-framework apps. Vite/React projects using Tailwind can skip
+   this and map tokens via tailwind.config.js instead.
+
+   Load order (in your HTML):
+     <link rel="stylesheet" href="theme.css" />
+     <link rel="stylesheet" href="components.css" />
+
+   Every value in this file traces to a CSS variable from theme.css.
+   No raw hex, no magic px numbers.
+   ============================================================ */
+
+/* ---------- Typography role utilities ---------- */
+/* Expressive roles — use when theme.css has Expressive variant active */
+.t-hero-metric    { font-size: 56px; font-weight: 900; letter-spacing: -2px; }
+.t-summary-metric { font-size: 36px; font-weight: 900; letter-spacing: -1px; }
+.t-screen-title   { font-size: 34px; font-weight: 700; letter-spacing: -0.5px; }
+.t-result-readout { font-size: 30px; font-weight: 700; letter-spacing: -0.3px; }
+.t-section-title  { font-size: 24px; font-weight: 700; letter-spacing: -0.3px; }
+.t-stepper-value  { font-size: 22px; font-weight: 700; }
+.t-card-title     { font-size: 18px; font-weight: 700; }
+.t-history-value  { font-size: 16px; font-weight: 700; }
+.t-setting-value  { font-size: 14px; font-weight: 600; }
+.t-body           { font-size: 13px; font-weight: 600; }
+.t-body-reg       { font-size: 13px; font-weight: 400; }
+.t-nav-tab        { font-size: 12px; font-weight: 700; }
+.t-nav-tab-inactive { font-size: 12px; font-weight: 400; }
+.t-section-label  { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--color-text-muted); }
+.t-meta           { font-size: 11px; font-weight: 400; color: var(--color-text-muted); }
+
+/* ---------- Button ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-sans);
+  transition: transform 80ms ease, background 150ms ease;
+  cursor: pointer;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.btn-primary {
+  width: 100%;
+  height: 56px;
+  background: var(--color-text-primary);
+  color: var(--color-text-inverse);
+  border-radius: var(--radius-button, 20px);
+  font-size: 18px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.btn-secondary {
+  width: 100%;
+  height: 52px;
+  background: var(--color-surface-card);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-base);
+  border-radius: var(--radius-button, 20px);
+  font-size: 15px;
+  font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.btn-ghost {
+  background: none;
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-radius: var(--radius-save-button, 12px);
+}
+
+.btn-icon {
+  width: 44px; height: 44px;
+  background: none;
+  color: var(--color-text-primary);
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-save-button, 12px);
+}
+.btn-icon:active { opacity: 0.6; }
+
+/* ---------- Input ---------- */
+.input {
+  width: 100%;
+  min-height: 48px;
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-well, 18px);
+  padding: 14px 16px;
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  outline: none;
+  transition: border-color 150ms ease;
+}
+.input:focus { border-color: var(--color-border-strong); }
+.input::placeholder { color: var(--color-text-muted); }
+
+.input-large {
+  min-height: 120px;
+  padding: 20px;
+  resize: none;
+}
+
+/* ---------- Card ---------- */
+.card {
+  background: var(--color-surface-card);
+  border-radius: var(--radius-card, 20px);
+  padding: 16px;
+  border: 1px solid var(--color-border-subtle);
+}
+.card:active { background: var(--color-surface-hover); }
+
+.card-panel {
+  background: var(--color-surface-panel);
+  border-radius: var(--radius-card, 20px);
+  padding: 16px;
+  border: 1px solid var(--color-border-subtle);
+}
+
+/* ---------- MediaPreviewCard (NEW primitive v1.1) ---------- */
+/* Use: YouTube/podcast link previews, article embeds, file attachments — any thumbnail+title+meta surface. */
+.media-preview {
+  background: var(--color-surface-card);
+  border-radius: var(--radius-card, 20px);
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  border: 1px solid var(--color-border-subtle);
+}
+.media-preview-thumb {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-save-button, 12px);
+  background: linear-gradient(135deg, var(--color-surface-hover), var(--color-surface-canvas));
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  position: relative;
+  font-size: 32px;
+  opacity: 0.9;
+}
+.media-preview-info { flex: 1; min-width: 0; }
+.media-preview-title {
+  font-size: 15px; font-weight: 700;
+  line-height: 1.3;
+  overflow: hidden;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  margin-bottom: 4px;
+}
+.media-preview-meta {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.media-preview-meta .sep { opacity: 0.5; }
+
+/* ---------- SegmentedControl with sublabel (extended primitive) ---------- */
+/* Base segmented is unchanged. This variant adds a sublabel under each button
+   for things like "Tight / 6 min", "Monthly / $9", "Beginner / Easy". */
+.segmented {
+  background: var(--color-surface-card);
+  border-radius: var(--radius-button, 20px);
+  padding: 4px;
+  display: grid;
+  gap: 4px;
+  border: 1px solid var(--color-border-subtle);
+}
+.segmented[data-cols="2"] { grid-template-columns: 1fr 1fr; }
+.segmented[data-cols="3"] { grid-template-columns: 1fr 1fr 1fr; }
+.segmented[data-cols="4"] { grid-template-columns: repeat(4, 1fr); }
+
+.segmented-btn {
+  padding: 12px 8px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-align: center;
+  transition: all 150ms ease;
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  cursor: pointer;
+}
+.segmented-btn:active { opacity: 0.7; }
+.segmented-btn.active {
+  background: var(--color-text-primary);
+  color: var(--color-text-inverse);
+}
+.segmented-btn-sub {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  margin-top: 2px;
+  opacity: 0.7;
+}
+.segmented-btn.active .segmented-btn-sub { opacity: 0.6; }
+
+/* ---------- AISuggestionCallout (NEW primitive v1.1) ---------- */
+/* Use: LLM-powered "we recommend", "insight", "summary" surfaces — any AI-originated message that needs visual distinction from user content. */
+.ai-callout {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-well, 18px);
+  padding: 12px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.ai-callout-icon {
+  font-size: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.ai-callout-text {
+  flex: 1;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--color-text-secondary);
+}
+.ai-callout-text strong { color: var(--color-text-primary); font-weight: 700; }
+
+/* ---------- ProcessingFlow (NEW compound primitive v1.1) ---------- */
+/* Use: upload progress, multi-stage async ops, batch processing, generation pipelines. */
+.processing-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 32px;
+}
+.pulse-ring {
+  width: 120px; height: 120px;
+  border: 2px solid var(--color-text-primary);
+  border-radius: 50%;
+  position: relative;
+  animation: ds-pulse 2s ease-out infinite;
+}
+.pulse-ring::before,
+.pulse-ring::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 2px solid var(--color-text-primary);
+  opacity: 0;
+  animation: ds-pulseOut 2s ease-out infinite;
+}
+.pulse-ring::after { animation-delay: 1s; }
+@keyframes ds-pulse {
+  0%, 100% { box-shadow: inset 0 0 0 0 rgba(255,255,255,0.05); }
+  50% { box-shadow: inset 0 0 0 60px rgba(255,255,255,0.03); }
+}
+@keyframes ds-pulseOut {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+.processing-stage-text {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  min-height: 28px;
+}
+.processing-stage-sub {
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  min-height: 20px;
+  margin-top: 4px;
+}
+.stage-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 80%;
+  max-width: 260px;
+}
+.stage-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition: color 300ms ease;
+}
+.stage-item.active { color: var(--color-text-primary); font-weight: 700; }
+.stage-item.done { color: var(--color-text-secondary); }
+.stage-item .stage-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--color-border-strong);
+  transition: background 300ms ease;
+}
+.stage-item.active .stage-dot {
+  background: var(--color-text-primary);
+  box-shadow: 0 0 0 4px rgba(255,255,255,0.1);
+}
+.stage-item.done .stage-dot { background: var(--color-text-primary); }
+
+/* ---------- Badge with dot (extended primitive) ---------- */
+/* Base badge unchanged. This variant adds a leading colored dot. */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  padding: 4px 8px;
+  border-radius: var(--radius-pill, 9999px);
+  background: var(--color-surface-card);
+  color: var(--color-text-primary);
+}
+.badge.bare { background: none; padding: 0; }
+.badge-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.badge-dot--zone-1 { background: var(--color-zone-1, #60A5FA); }
+.badge-dot--zone-2 { background: var(--color-zone-2, #22C55E); }
+.badge-dot--zone-3 { background: var(--color-zone-3, #FACC15); }
+.badge-dot--zone-4 { background: var(--color-zone-4, #FB923C); }
+.badge-dot--zone-5 { background: var(--color-zone-5, #EF4444); }
+.badge-dot--ok     { background: var(--color-status-ok); }
+.badge-dot--warn   { background: var(--color-status-warn); }
+.badge-dot--error  { background: var(--color-status-error); }
+.badge-dot--info   { background: var(--color-status-info); }
+
+/* ---------- SourceLinkBadge (NEW small primitive v1.1) ---------- */
+/* Small tappable pill for "link out to external source" — timestamps, refs, citations, deep links. */
+.source-link {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  padding: 4px 8px;
+  background: var(--color-surface-card);
+  border-radius: 8px;
+  font-variant-numeric: tabular-nums;
+  transition: all 150ms ease;
+  border: none;
+  font-family: var(--font-sans);
+  cursor: pointer;
+}
+.source-link:active,
+.source-link.active {
+  background: var(--color-text-primary);
+  color: var(--color-text-inverse);
+}
+.source-link:hover { background: var(--color-surface-hover); }
+
+/* ---------- ListRow with thumbnail (NEW primitive v1.1) ---------- */
+/* Library lists, recents, search results — any row with optional thumbnail + two-line content. */
+.list-row {
+  background: var(--color-surface-card);
+  border-radius: var(--radius-card, 20px);
+  padding: 14px;
+  display: flex;
+  gap: 12px;
+  border: 1px solid var(--color-border-subtle);
+  transition: background 150ms ease;
+  width: 100%;
+  text-align: left;
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  cursor: pointer;
+  align-items: center;
+}
+.list-row:active { background: var(--color-surface-hover); }
+
+.list-row-compact {
+  padding: 12px;
+  border-radius: var(--radius-save-button, 12px);
+}
+
+.list-row-thumb {
+  width: 56px; height: 56px;
+  border-radius: var(--radius-save-button, 12px);
+  background: linear-gradient(135deg, var(--color-surface-hover), var(--color-surface-canvas));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.list-row-thumb-sm { width: 40px; height: 40px; font-size: 18px; }
+
+.list-row-content { flex: 1; min-width: 0; }
+.list-row-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.3;
+}
+.list-row-meta {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.list-row-meta .sep { opacity: 0.5; }
+.list-row-chevron {
+  color: var(--color-text-muted);
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+/* ---------- EmptyState (NEW primitive v1.1) ---------- */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+  min-height: 60vh;
+  gap: 12px;
+}
+.empty-state-icon { font-size: 48px; opacity: 0.3; margin-bottom: 12px; }
+.empty-state-title { font-size: 18px; font-weight: 700; }
+.empty-state-sub { font-size: 13px; color: var(--color-text-muted); max-width: 260px; }
+
+/* ---------- BottomNav (formalized from primitives.md catalog) ---------- */
+.bottom-nav {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 74px;
+  background: var(--color-surface-nav, var(--color-surface-canvas));
+  border-top: 1px solid var(--color-border-subtle);
+  display: flex;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.bottom-nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 400;
+  padding-top: 8px;
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  cursor: pointer;
+}
+.bottom-nav-btn.active {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+.bottom-nav-btn-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* ---------- Toast (NEW primitive v1.1) ---------- */
+.toast {
+  position: absolute;
+  bottom: 100px;
+  left: 20px; right: 20px;
+  background: var(--color-surface-panel);
+  border: 1px solid var(--color-border-base);
+  border-radius: var(--radius-well, 18px);
+  padding: 14px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  display: none;
+  z-index: 100;
+  color: var(--color-text-primary);
+}
+.toast.show {
+  display: block;
+  animation: ds-toast-in 250ms ease-out;
+}
+@keyframes ds-toast-in {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ---------- ScreenHeader (NEW primitive v1.1) ---------- */
+/* Sticky top bar with back button, optional title, optional action. */
+.screen-header {
+  position: sticky;
+  top: 0;
+  background: var(--color-surface-canvas);
+  padding: 16px 0 12px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.screen-header-back {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 4px;
+  margin-left: -4px;
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  cursor: pointer;
+}
+.screen-header-back-arrow { font-size: 20px; line-height: 1; }
+
+/* ---------- InlineError (NEW primitive v1.1) ---------- */
+.error-banner {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fecaca;
+  padding: 12px 16px;
+  border-radius: var(--radius-well, 18px);
+  font-size: 13px;
+  font-weight: 600;
+  display: none;
+}
+.error-banner.show { display: block; }
+
+/* ---------- Brand lockup (Expressive convention) ---------- */
+.brand-lockup {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  font-size: 28px;
+  letter-spacing: -1px;
+}
+.brand-lockup-primary { font-weight: 900; }
+.brand-lockup-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--color-text-primary);
+  display: inline-block;
+  margin-left: 4px;
+  transform: translateY(-2px);
+}
+
+/* ---------- Utility spacers ---------- */
+.spacer-xs  { height: 4px; }
+.spacer-sm  { height: 8px; }
+.spacer-md  { height: 16px; }
+.spacer-lg  { height: 24px; }
+.spacer-xl  { height: 32px; }
+.spacer-2xl { height: 48px; }
+
+/* ---------- Screen reader only ---------- */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+.hidden { display: none !important; }
