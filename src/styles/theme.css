@@ -1,0 +1,192 @@
+/* Jason's Generalist Design System — theme.css
+ * Drop into src/styles/theme.css and import from main entry.
+ * Dark-only. Pick ONE variant by uncommenting the relevant block below.
+ * Generated from tokens.json. Edit tokens.json, regenerate — don't edit this file directly in long-lived projects.
+ */
+
+:root {
+  /* ============================================================
+     CORE — shared across both variants
+     ============================================================ */
+
+  /* Spacing (4px grid) */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 24px;
+  --space-2xl: 32px;
+  --space-3xl: 48px;
+  --space-4xl: 64px;
+
+  /* Layout */
+  --layout-screen-margin: 20px;
+  --layout-content-width: 350px;
+  --layout-tap-target-min: 44px;
+  --layout-card-gap: 16px;
+  --layout-tile-gap: 12px;
+  --layout-section-gap: 48px;
+
+  /* Typography family */
+  --font-sans: 'InterVariable', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+
+  /* Semantic status (data-viz + alerts only — NEVER decorative) */
+  --color-status-ok: #27a644;
+  --color-status-warn: #e09b2d;
+  --color-status-error: #e8604c;
+  --color-status-info: #5e6ad2;
+
+  /* Optional zone palette (only when product has a domain color axis) */
+  --color-zone-1: #60A5FA;
+  --color-zone-2: #22C55E;
+  --color-zone-3: #FACC15;
+  --color-zone-4: #FB923C;
+  --color-zone-5: #EF4444;
+
+
+  /* ============================================================
+     VARIANT A — CLINICAL RESTRAINED (default; Meridian-style)
+     Uncomment + use for web/professional/EMR/enterprise.
+     ============================================================ */
+
+  /* Surface ladder (luminance-stepped ≥1.12:1) */
+  --color-surface-canvas: #08090a;
+  --color-surface-panel:  #17181b;
+  --color-surface-card:   #24262a;
+  --color-surface-hover:  #30333a;
+
+  /* Text (never pure white on near-black) */
+  --color-text-primary:   #f7f8f8;
+  --color-text-secondary: #d0d6e0;
+  --color-text-muted:     #a8adb7;
+  --color-text-inverse:   #08090a;
+
+  /* Borders */
+  --color-border-subtle: #24262a;
+  --color-border-base:   #35383e;
+  --color-border-strong: #42464d;
+
+  /* Accent — single chromatic for CTA/active/selected */
+  --color-accent-base:   #5e6ad2;
+  --color-accent-hover:  #7170ff;
+  --color-accent-bright: #828fff;
+  --color-accent-light:  rgba(113, 112, 255, 0.08);
+  --color-accent-tint:   rgba(113, 112, 255, 0.12);
+
+  /* Font weights (Linear-style, no bold ≥600) */
+  --font-weight-regular: 400;
+  --font-weight-ui:      510;
+  --font-weight-strong:  590;
+
+  /* Type roles (role-keyed, not t-shirt-sized) */
+  --type-caption-size: 12px; --type-caption-weight: 510; --type-caption-tracking: 0;
+  --type-ui-size: 13px;      --type-ui-weight: 510;      --type-ui-tracking: -0.130px;
+  --type-body-size: 15px;    --type-body-weight: 400;    --type-body-tracking: -0.165px;
+  --type-body-lg-size: 18px; --type-body-lg-weight: 400; --type-body-lg-tracking: -0.165px;
+  --type-h3-size: 20px;      --type-h3-weight: 590;      --type-h3-tracking: -0.240px;
+  --type-h2-size: 24px;      --type-h2-weight: 510;      --type-h2-tracking: -0.288px;
+  --type-h1-size: 32px;      --type-h1-weight: 510;      --type-h1-tracking: -0.704px;
+  --type-display-size: 48px; --type-display-weight: 510; --type-display-tracking: -1.056px;
+
+  --font-floor: 12px;
+
+  /* Radius (tight, 2–12px) */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-default: 6px;
+  --radius-card: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 9999px;
+
+  /* Density — comfortable (default) */
+  --density-row-height: 36px;
+  --density-pad-y: 10px;
+  --density-card-pad: 16px;
+  --density-gap: 12px;
+
+
+  /* ============================================================
+     VARIANT B — EXPRESSIVE NATIVE (GOVO2-style)
+     To use: replace the Clinical block above with the values below.
+     Uncomment this block and comment out the Clinical block.
+     ============================================================ */
+
+  /*
+  --color-surface-canvas: #000000;
+  --color-surface-panel:  #111111;
+  --color-surface-card:   #181818;
+  --color-surface-hover:  #1E1E1E;
+  --color-surface-nav:    #050505;
+
+  --color-text-primary:   #FFFFFF;
+  --color-text-secondary: #C7C7C7;
+  --color-text-muted:     #B8B8B8;
+  --color-text-inverse:   #000000;
+
+  --color-border-subtle: #222222;
+  --color-border-base:   #2A2A2A;
+  --color-border-strong: #333333;
+
+  (No --color-accent-* — Expressive uses white CTAs + semantic zones.)
+
+  --font-weight-regular: 400;
+  --font-weight-medium:  600;
+  --font-weight-bold:    700;
+  --font-weight-black:   900;
+
+  --type-meta-label-size: 11px;       --type-meta-label-weight: 400;
+  --type-section-label-size: 11px;    --type-section-label-weight: 600;
+  --type-nav-tab-inactive-size: 12px; --type-nav-tab-inactive-weight: 400;
+  --type-nav-tab-size: 12px;          --type-nav-tab-weight: 700;
+  --type-body-size: 13px;             --type-body-weight: 600;
+  --type-body-regular-size: 13px;     --type-body-regular-weight: 400;
+  --type-setting-value-size: 14px;    --type-setting-value-weight: 600;
+  --type-history-value-size: 16px;    --type-history-value-weight: 700;
+  --type-card-title-size: 18px;       --type-card-title-weight: 700;
+  --type-stepper-value-size: 22px;    --type-stepper-value-weight: 700;
+  --type-section-title-size: 24px;    --type-section-title-weight: 700;
+  --type-result-readout-size: 30px;   --type-result-readout-weight: 700;
+  --type-screen-title-size: 34px;     --type-screen-title-weight: 700;
+  --type-summary-metric-size: 36px;   --type-summary-metric-weight: 900;
+  --type-hero-metric-size: 56px;      --type-hero-metric-weight: 900;
+
+  --font-floor: 11px;
+
+  --radius-save-button: 12px;
+  --radius-destructive-pill: 16px;
+  --radius-settings-row: 16px;
+  --radius-stepper-row: 18px;
+  --radius-well: 18px;
+  --radius-card: 20px;
+  --radius-button: 20px;
+  --radius-hero: 24px;
+  --radius-dot: 9999px;
+  */
+}
+
+/* ============================================================
+   Base reset + defaults
+   ============================================================ */
+
+html, body {
+  background: var(--color-surface-canvas);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--type-body-size);
+  font-weight: var(--type-body-weight);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Header hierarchy — body NEVER louder than header */
+h1 { font-size: var(--type-h1-size); font-weight: var(--type-h1-weight); letter-spacing: var(--type-h1-tracking); }
+h2 { font-size: var(--type-h2-size); font-weight: var(--type-h2-weight); letter-spacing: var(--type-h2-tracking); }
+h3 { font-size: var(--type-h3-size); font-weight: var(--type-h3-weight); letter-spacing: var(--type-h3-tracking); }
+
+/* Accessible focus ring */
+*:focus-visible {
+  outline: 2px solid var(--color-accent-base);
+  outline-offset: 2px;
+}
